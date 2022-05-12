@@ -1,5 +1,11 @@
 """The deadoralive plugin."""
 
+# TODO: Backwards compatibility for Python 2 and CKAN 2.8 and lower
+# if p.toolkit.check_ckan_version(min_version='2.9.0'):
+#    from ckanext.deadoralive.plugin.flask_plugin import MixinPlugin
+#else:
+from ckanext.deadoralive.plugin.flask_plugin import MixinPlugin
+
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
@@ -10,9 +16,12 @@ import ckanext.deadoralive.logic.action.update as update
 import ckanext.deadoralive.helpers as helpers
 import ckanext.deadoralive.logic.auth.update
 import ckanext.deadoralive.logic.auth.get
+import logging as log
+
+log = log.getLogger(__name__)
 
 
-class DeadOrAlivePlugin(plugins.SingletonPlugin):
+class DeadOrAlivePlugin(MixinPlugin, plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurable)
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IActions)
@@ -24,6 +33,10 @@ class DeadOrAlivePlugin(plugins.SingletonPlugin):
 
     def configure(self, config_):
         results.create_database_table()
+        for key, value in config_.items():
+            if 'datajson' in key:
+                log.error("{} = {}".format(key, value))
+
 
         # Update the class variables for the config settings with the values
         # from the config file, *if* they're in the config file.
@@ -50,8 +63,8 @@ class DeadOrAlivePlugin(plugins.SingletonPlugin):
     # IConfigurer
 
     def update_config(self, config_):
-        toolkit.add_template_directory(config_, 'templates')
-        toolkit.add_resource('theme/resources', 'deadoralive')
+        toolkit.add_template_directory(config_, '../templates')
+        toolkit.add_resource('../theme/resources', 'deadoralive')
 
         if toolkit.check_ckan_version(max_version='2.2.999'):
             # Add CKAN version 2.2 support templates.
@@ -77,36 +90,6 @@ class DeadOrAlivePlugin(plugins.SingletonPlugin):
         return {
             "ckanext_deadoralive_get": helpers.get_results,
         }
-
-    # IRoutes
-
-    def before_map(self, map_):
-        map_.connect("deadoralive_broken_links_by_organization",
-                     "/deadoralive/organization/broken_links/",
-                     controller="ckanext.deadoralive.controllers:BrokenLinksController",
-                     action="broken_links_by_organization")
-        map_.connect("deadoralive_broken_links_by_email",
-                     "/ckan-admin/broken_links",
-                     controller="ckanext.deadoralive.controllers:BrokenLinksController",
-                     action="broken_links_by_email",
-                     ckan_icon="link")
-
-        # Make some of this plugin's custom action functions also available at
-        # custom URLs. This is to support deadoralive's non-CKAN specific API.
-        map_.connect(
-            "/deadoralive/get_resources_to_check",
-            controller="ckanext.deadoralive.controllers:BrokenLinksController",
-            action="get_resources_to_check")
-        map_.connect(
-            "/deadoralive/get_url_for_resource_id",
-            controller="ckanext.deadoralive.controllers:BrokenLinksController",
-            action="get_resource_id_for_url")
-        map_.connect(
-            "/deadoralive/upsert",
-            controller="ckanext.deadoralive.controllers:BrokenLinksController",
-            action="upsert")
-
-        return map_
 
     # IAuthFunctions
 

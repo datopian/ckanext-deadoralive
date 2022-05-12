@@ -1,0 +1,5 @@
+master-css:
+  contents:
+    - resources/styles/master.css
+  output: deadoralive/%(version)s_master.css
+  filters: cssrewrite

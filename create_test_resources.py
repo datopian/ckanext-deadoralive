@@ -27,23 +27,23 @@ logger.addHandler(ch)
 
 def random_author():
     return random.choice((
-        dict(name=u"äüthör one", email=u"äüthör_1@authors.com"),
-        dict(name=u"äüthör two", email=u"author_2@authors.com"),
-        dict(name=u"äüthör three", email=u"äüthör_3@authors.com"),
+        dict(name=u"author one", email=u"author_1@authors.com"),
+        dict(name=u"author two", email=u"author_2@authors.com"),
+        dict(name=u"author three", email=u"author_3@authors.com"),
         dict(name=None, email=None),
-        dict(name=u"äüthör three", email=None),
-        dict(name=None, email=u"äüthör_3@authors.com"),
+        dict(name=u"author three", email=None),
+        dict(name=None, email=u"author_3@authors.com"),
     ))
 
 
 def random_maintainer():
     return random.choice((
-        dict(name=u"mäintainër one", email=u"mäintainër_1@authors.com"),
-        dict(name=u"mäintainër two", email=u"mäintainër_2@authors.com"),
-        dict(name=u"mäintainër three", email=u"mäintainër_3@authors.com"),
+        dict(name=u"maintainer one", email=u"maintainer_1@authors.com"),
+        dict(name=u"maintainer two", email=u"maintainer_2@authors.com"),
+        dict(name=u"maintainer three", email=u"maintainer_3@authors.com"),
         dict(name=None, email=None),
-        dict(name=u"mäintainër three", email=None),
-        dict(name=None, email=u"mäintainër_3@authors.com"),
+        dict(name=u"maintainer three", email=None),
+        dict(name=None, email=u"maintainer_3@authors.com"),
     ))
 
 

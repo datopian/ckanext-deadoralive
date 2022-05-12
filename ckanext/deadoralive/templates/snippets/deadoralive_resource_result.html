@@ -32,7 +32,7 @@
             {% endif %}
           </ul>
           <p>
-            {% set url = h.url_for(controller='ckanext.deadoralive.controllers:BrokenLinksController', action='broken_links_by_organization') %}
+            {% set url = h.url_for('deadoralive.broken_links_by_organization') %}
             <a class="btn" href="{{ url }}">
               {{ _("View a report of all broken resource links on this site") }}
             </a>

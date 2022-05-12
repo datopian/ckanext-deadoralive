@@ -1,4 +1,5 @@
 """Authorization functions for the action functions in action/get.py."""
+
 import ckan.plugins.toolkit as toolkit
 import ckanext.deadoralive.config as config
 

@@ -1,11 +1,11 @@
 import datetime
-
-import pylons.config
+import logging as log
 
 import ckan.plugins.toolkit as toolkit
 import ckanext.deadoralive.model.results as results
 import ckanext.deadoralive.config as config
 
+log = log.getLogger(__name__)
 
 def get_resources_to_check(context, data_dict):
     """Return a list of up to ``n`` resource IDs to be checked.
@@ -313,21 +313,21 @@ def broken_links_by_email(context, data_dict):
 
         if len(item["datasets_with_broken_links"]) == 1:
             subject = u"You have a dataset with broken links on {site}"
-            subject = subject.format(site=pylons.config["ckan.site_title"])
+            subject = subject.format(site=toolkit.config["ckan.site_title"])
             body = u"This dataset contains a broken link:%0A%0A{title}%0A{url}"
             broken_dataset = item["datasets_with_broken_links"][0]
-            url = pylons.config["ckan.site_url"] + toolkit.url_for(
-                controller="package", action="read", id=broken_dataset["name"])
+            url = toolkit.config["ckan.site_url"] + toolkit.url_for(
+                controller="dataset", action="read", id=broken_dataset["name"])
             body = body.format(title=broken_dataset["title"], url=url)
 
         else:
             subject = u"You have {n} datasets with broken links on {site}"
             subject = subject.format(n=len(item["datasets_with_broken_links"]),
-                                     site=pylons.config["ckan.site_title"])
+                                     site=toolkit.config["ckan.site_title"])
             body = u"These datasets have broken links:"
             for dataset in item["datasets_with_broken_links"]:
-                url = pylons.config["ckan.site_url"] + toolkit.url_for(
-                    controller="package", action="read", id=dataset["name"])
+                url = toolkit.config["ckan.site_url"] + toolkit.url_for(
+                    controller="dataset", action="read", id=dataset["name"])
                 body += u"%0A%0A{title}%0A{url}".format(
                     title=dataset["title"], url=url)
 

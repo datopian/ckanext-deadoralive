@@ -2,7 +2,7 @@
 
 {% block styles %}
   {{ super() }}
-  {% resource "deadoralive/styles/master.css" %}
+  {% asset "deadoralive/styles/master.css" %}
 {% endblock %}
 
 {% block subtitle %}{{ _("Broken Links") }}{% endblock %}
@@ -19,7 +19,7 @@
       {% if organizations %}
         <ul class="broken-links-list with-images unstyled">
           {% for organization in organizations %}
-            {% set org_url = h.url_for(controller="organization", action="read", id=organization.name) %}
+            {% set org_url = h.url_for("organization.read", id=organization.name) %}
             {% set org_image_url = organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') %}
             <li class="item">
               <h3><a href="{{ org_url }}">{{ organization.display_name }}</a></h3>
@@ -27,7 +27,7 @@
               <p>{{ _("{0} has {1} broken links:").format(organization.display_name, organization.num_broken_links) }}</p>
               <ul>
                 {% for dataset in organization.datasets_with_broken_links %}
-                  {% set url = h.url_for(controller="package", action="read",
+                  {% set url = h.url_for("dataset.read",
                                          id=dataset.name) %}
                   <li><a href="{{ url }}">{{ dataset.display_name }}</a> has {{ dataset.num_broken_links }} broken links</li>
                 {% endfor %}
