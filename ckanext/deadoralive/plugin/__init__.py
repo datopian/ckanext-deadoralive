@@ -33,10 +33,6 @@ class DeadOrAlivePlugin(MixinPlugin, plugins.SingletonPlugin):
 
     def configure(self, config_):
         results.create_database_table()
-        for key, value in config_.items():
-            if 'datajson' in key:
-                log.error("{} = {}".format(key, value))
-
 
         # Update the class variables for the config settings with the values
         # from the config file, *if* they're in the config file.
