@@ -2,7 +2,7 @@ from flask import Blueprint
 
 import ckan.plugins as plugins
 
-import ckanext.deadoralive.plugin.plugin_functions as deadoralive_plugin
+from . import plugin_functions as deadoralive_plugin
 
 deadoralive = Blueprint(u'deadoralive', __name__)
 
